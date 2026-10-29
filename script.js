@@ -1,0 +1,20 @@
+'use strict';
+const dialog = document.querySelector('#gallery-dialog');
+const galleryImage = document.querySelector('#gallery-image');
+const galleryTitle = document.querySelector('#gallery-title');
+const galleryCaption = document.querySelector('#gallery-caption');
+let opener;
+document.querySelectorAll('[data-gallery]').forEach(button => button.addEventListener('click', () => {
+  opener = button;
+  const source = button.querySelector('img');
+  galleryImage.src = source.src;
+  galleryImage.alt = source.alt;
+  galleryTitle.textContent = source.alt;
+  galleryCaption.textContent = button.dataset.caption;
+  dialog.showModal();
+  document.body.classList.add('modal-open');
+  document.querySelector('#close-gallery').focus();
+}));
+document.querySelector('#close-gallery').addEventListener('click', () => dialog.close());
+dialog.addEventListener('click', event => { if (event.target === dialog) { const r = dialog.getBoundingClientRect(); if(event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close(); }});
+dialog.addEventListener('close', () => { document.body.classList.remove('modal-open'); if (opener) opener.focus(); });
